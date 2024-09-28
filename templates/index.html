@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Weather Graph</title>
+		<!-- <link href="/static/css/dark.css" rel="stylesheet" > -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	</head>
+	<body>
+	
+		<div id = "myPlot" style = "width: 100%;"></div>
+		
+		<script>
+
+			data = [];
+			names = ["Temperature", "Pressure", "Humidity"];
+			colors = ["red", "green", "blue"]
+			count = 0;
+
+			{% for series in data %}
+			
+				xArray = [];
+				yArray = [];
+
+				{% for point in series %}
+			
+					xArray.push('{{ point[0] }}');
+					yArray.push({{ point[1] }});
+				
+				{% endfor %}
+
+				data.push({x: xArray, y: yArray, mode: "lines", line: {color: colors[count], width: 2, shape: "spline"}, name: names[count]});
+				count++
+			
+			{% endfor %}
+
+			// Define Layout
+			let layout = {
+				xaxis: {title: "Time"},
+				yaxis: {title: "Normalized Weather Observation"},  
+				title: "Tampa Pressure Fluctuations",
+				updatemenus: [{
+
+					y: 1,
+					yanchor: 'top',
+					
+					buttons: [{
+						method: 'restyle',
+						args: ['visible', [true, true, true]],
+						label: 'All'
+					}, {
+						method: 'restyle',
+						args: ['visible', [true, false, false]],
+						label: 'Temperature'
+					}, {
+						method: 'restyle',
+						args: ['visible', [true, true, false]],
+						label: 'Temperature+Pressure'
+					}, {
+						method: 'restyle',
+						args: ['visible', [false, true, false]],
+						label: 'Pressure'
+					}, {
+						method: 'restyle',
+						args: ['visible', [false, true, true]],
+						label: 'Pressure+Humidity'
+					}, {
+						method: 'restyle',
+						args: ['visible', [false, false, true]],
+						label: 'Humidity'
+					}, {
+						method: 'restyle',
+						args: ['visible', [true, false, true]],
+						label: 'Temperature+Humidity'
+					}]
+
+				}]
+			};
+			
+			// Display using Plotly
+			Plotly.newPlot("myPlot", data, layout);
+			
+		</script>
+		
+		<form action = "/dets" id= "form" method = "post" style = "font-family: 'Open Sans', verdana, arial, sans-serif; font-size: small;">
+		
+			<input type="radio" id="comp" name="style" value="comp">
+			<label for="comp">Side by Side Comparison</label>
+			<input type="radio" id="value" name="style" value="value">
+			<label for="value">Actual Values</label>
+			
+			<br><br>
+
+			<label for = "days">Days</label>
+			<input type = "number" id =  "days" name = "days" value = {{ days }} min = "0" max = "365">
+
+			<label for = "station">City</label>
+			<select id = "station" name = "station">
+				<option id = "KTPA" value = "KTPA">Tampa</option>
+				<option id = "PHTO" value = "PHTO">Hilo</option>
+				<option id = "KOXR" value = "KOXR">Ventura</option>
+			</select>
+			
+			
+
+			<input type = "submit" value = "Display">
+		</form>
+		
+		<script>
+		
+			{% if style == 'comp' %}
+				document.getElementById("comp").checked = true;
+			{% elif style == 'value' %}
+				document.getElementById("value").checked = true;
+			{% else %}
+				document.getElementById("comp").checked = true;
+			{% endif %}
+			
+			document.getElementById("station").value = '{{ station }}'
+		</script>
+	</body>
+</html>

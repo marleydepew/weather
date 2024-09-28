@@ -1,0 +1,91 @@
+
+/******* GENERAL *******/
+
+* {
+	box-sizing: border-box;
+	font-family: arial;
+}
+
+body {
+	background-color: black;
+	color: white;
+	padding: 0px;
+	margin: 0px;
+}
+
+
+#content {
+	overflow-x: auto;
+}
+
+#content table, tr, th, td {
+	border: 1px solid white;
+	border-collapse: collapse;
+	text-align: left;
+	padding: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#content a:link, a:visited {
+  background-color: white;
+  color: black;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+#content a:hover, a:active {
+  background-color: #ffff66;
+}
+
+.content::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.two-column {
+	width: 50%;
+	float: left;
+	padding: 10px;
+}
+
+.two-column label {
+	float: right;
+}
+
+.flex-container {
+	display: flex;
+	align-items: stretch;
+	background-image: linear-gradient(to bottom right, white, #ffff66);
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50px;
+}
+
+.flex-container > div {
+	padding: 10px;
+	color: black;
+	text-align: center;
+	flex-grow: 1;
+}
+
+/******* HEAD *******/
+#head {
+	background-color: #ffff66;
+	color: black;
+	height: 100px;
+	width: 100%;
+	margin-bottom: 50px;
+}
+
+#head img {
+	height: 100px;
+}
+
+#head h1 {
+	text-align: center;
+}
